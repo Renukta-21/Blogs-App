@@ -1,0 +1,9 @@
+POST http://localhost:3005/api/blogs
+Content-Type: application/json
+
+{
+    "title": "El hombre que no vive",
+    "author": "Daniel Urbina",
+    "url": "fdfjdfhksdfjfd",
+    "likes": 31
+}
