@@ -1,9 +1,8 @@
 const config = require('./utils/config')
-const express = require('express')
 const cors = require('cors')
-const mongoose = require('mongoose')
+const express = require('express')
 const app = express()
-const Blog = require('./models/blog')
+const mongoose = require('mongoose')
 
 mongoose.connect(process.env.MONGO_URI)
 .then(console.log('SuccesFull connection to mongoDB'))
@@ -11,19 +10,7 @@ mongoose.connect(process.env.MONGO_URI)
 
 app.use(cors())
 app.use(express.json())
-app.get('/api/blogs', (req,res) => {
-    Blog.find({})
-    .then(blogs=> res.send(blogs))
-})
-app.post('/api/blogs', (req,res) => {
-    const newBlog = new Blog(req.body)
-    console.log(newBlog)
-    newBlog.save()
-    .then(savedBlog=>{
-        res.status(201).send(savedBlog)
-    })
-})
-
+app.use()
 
 const PORT = config.PORT || 3001 
 app.listen(PORT, ()=>{
