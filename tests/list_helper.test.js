@@ -21,6 +21,14 @@ const listWithMoreBlogs = [
   },
   {
     _id: '5a422aa71b54a676234d17f8',
+    title: 'Going to be a Fullstack Dev',
+    author: 'Daniel Martinez',
+    url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
+    likes: 30,
+    __v: 0,
+  },
+  {
+    _id: '5a422aa71b54a676234d17f8',
     title: 'On the road to get a great bike',
     author: 'Pablo Ceron',
     url: 'https://homepages.cwi.nl/~storm/teaching/reader/Dijkstra68.pdf',
@@ -49,7 +57,7 @@ describe('Total likes', () => {
   })
 
   test('of a bigger list is calculated right', () => {
-    assert.strictEqual(list_helper.totalLikes(listWithMoreBlogs), 98)
+    assert.strictEqual(list_helper.totalLikes(listWithMoreBlogs), 128)
   })
 })
 
@@ -63,6 +71,31 @@ describe('Favorite blog', () => {
       title: 'On the road to get a great bike',
       author: 'Pablo Ceron',
       likes: 45,
+    })
+  })
+})
+
+describe('Most blogs author',()=>{
+  test('with empty array', ()=>{
+    assert.strictEqual(list_helper.mostBlogs([]), null)
+  })
+  test('of list of blogs', ()=>{
+    assert.deepStrictEqual(list_helper.mostBlogs(listWithMoreBlogs), {
+      author: 'Daniel Martinez',
+      blogs:2
+    })
+  })
+})
+
+describe('Author with most likes', ()=>{
+  test('with an empty array', ()=>{
+    assert.strictEqual(list_helper.mostLikes([]), null)
+  })
+
+  test('with an list of authors', ()=>{
+    assert.deepStrictEqual(list_helper.mostLikes(listWithMoreBlogs), {
+      author: 'Daniel Martinez',
+      likes: 60
     })
   })
 })
