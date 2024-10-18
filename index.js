@@ -18,4 +18,5 @@ app.use('/api/blogs', blogsRouter)
 const PORT = config.PORT || 3001 
 app.listen(PORT, ()=>{
     console.log('server started on '+ PORT)
+    console.log(process.env.NODE_ENV)
 })
