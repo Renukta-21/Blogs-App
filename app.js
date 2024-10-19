@@ -9,10 +9,9 @@ const middleware = require('./utils/middleware')
 const connectionString =
   process.env.NODE_ENV === 'test' ?  config.TEST_MONGO_URI: config.MONGO_URI 
 
-console.log(connectionString)
 mongoose
   .connect(connectionString)
-  .then(console.log('SuccesFull connection to mongoDB'))
+  .then(console.log('SuccesFull connection to mongoDB '+ connectionString, process.env.NODE_ENV))
   .catch((err) => console.log('Unexpected error" ' + err))
 
 app.use(cors())
