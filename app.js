@@ -7,11 +7,9 @@ const blogsRouter = require('./controllers/blog')
 const middleware = require('./utils/middleware')
 
 const connectionString =
-  process.env.NODE_ENV === 'test'
-    && config.MONGO_URI
-    /* : config.TEST_MONGO_URI */
+  process.env.NODE_ENV === 'test' ?  config.TEST_MONGO_URI: config.MONGO_URI 
 
-    console.log(connectionString)
+console.log(connectionString)
 mongoose
   .connect(connectionString)
   .then(console.log('SuccesFull connection to mongoDB'))

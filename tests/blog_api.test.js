@@ -13,6 +13,13 @@ test('Blogs are returned as json', ()=>{
     .expect('Content-Type', /application\/json/)
 })
 
+test('There are three blogs', ()=>{
+    return api.get('/api/blogs') 
+    .then(response=>{
+        console.log(response.body)
+        assert.strictEqual(response.body.length, 4)
+    })
+})
 after(async()=>{
     await mongoose.connection.close()
 })
