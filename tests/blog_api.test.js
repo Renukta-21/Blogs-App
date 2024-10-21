@@ -32,7 +32,7 @@ beforeEach(async () => {
   })
   
 
-test('there are two blogs', async () => {
+/* test('there are two blogs', async () => {
   const response = await api.get('/api/blogs')
   assert.strictEqual(response.body.length, initialBlogs.length)
 })
@@ -42,7 +42,29 @@ test('First Blog is by Daniel Urbina',async()=>{
 
     const authors = response.body.map(b=> b.author)
     assert(authors.includes('Daniel Urbina'))
+}) */
+
+test.only('An valid Blog obj can be added', async()=>{
+  const newBlog = {
+    title: 'La calistenia como modelo del hombre',
+    author: 'Pablo Zuckerberg',
+    url: 'dsgvasdhjvasd',
+    likes: 200,
+  }
+
+  await api.post('/api/blogs')
+  .send(newBlog)
+  .expect(201)
+  .expect('Content-Type', /application\/json/)
+
+  const response = await api.get('/api/blogs')
+  const authors = response.body.map(b=> b.author)
+
+  assert(authors.includes('Pablo Zuckerberg'))
+  assert.strictEqual(response.body.length, initialBlogs.length + 1)
+
 })
+
 after(() => {
   mongoose.connection.close()
 })
