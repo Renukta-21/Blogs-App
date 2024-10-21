@@ -2,8 +2,8 @@ POST http://localhost:3006/api/blogs
 Content-Type: application/json
 
 {
-    "title": "El hombre que no vive",
+    "title": "El hombre que si vive",
     "author": "Daniel Urbina",
     "url": "fdfjdfhksdfjfd",
-    "likes": 31
+    "likes": 0
 }
