@@ -44,7 +44,7 @@ test('First Blog is by Daniel Urbina',async()=>{
     assert(authors.includes('Daniel Urbina'))
 }) */
 
-test.only('An valid Blog obj can be added', async()=>{
+test('An valid Blog obj can be added', async()=>{
   const newBlog = {
     title: 'La calistenia como modelo del hombre',
     author: 'Pablo Zuckerberg',
@@ -63,6 +63,14 @@ test.only('An valid Blog obj can be added', async()=>{
   assert(authors.includes('Pablo Zuckerberg'))
   assert.strictEqual(response.body.length, initialBlogs.length + 1)
 
+})
+
+test('Blog without content is not added',async ()=>{
+  const newBlog = {
+
+  }
+  return api.post('/api/blogs')
+  .expect
 })
 
 after(() => {
