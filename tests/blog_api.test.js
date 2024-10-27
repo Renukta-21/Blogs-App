@@ -1,4 +1,4 @@
-const { test, beforeEach, after } = require('node:test')
+const { test, beforeEach, after, describe } = require('node:test')
 const assert = require('node:assert')
 const supertest = require('supertest')
 const app = require('../app')
@@ -83,7 +83,7 @@ test('An new Blog object is added', async()=>{
 
 })
 
-test.only('Likes properties missing is filled w 0 ', async()=>{
+test('Likes properties missing is filled w 0 ', async()=>{
   const newBlog = {
     "title": "El hombre que se fue a morir xd",
     "author": "Daniel Mtz",
@@ -95,13 +95,83 @@ test.only('Likes properties missing is filled w 0 ', async()=>{
   .send(newBlog)
   .expect(201)
 
-  console.log(response.body)
   assert.strictEqual(response.body.likes, 0)
 })
 
 test('Missing required fields on post',async()=>{
-  
+  const newBlog = {
+    "title": "El hombre que se fue a morir xd",
+    "author": "Daniel Mtz",
+  } 
+
+  await api.post('/api/blogs')
+  .send(newBlog)
+  .expect(400)
+})
+
+describe('Deletion of a blog',()=>{
+  test('Succeds with code 204 if id is valid', async()=>{
+    const response = await 
+    api.get('/api/blogs')
+    .expect(200)
+
+    const blogs = response.body
+    await 
+    api.delete(`/api/blogs/${blogs[0].id}`)
+    .expect(204)
+
+  })
+
+  test('fails with code 404 if doesnt exist',async()=>{
+    const response = await
+     api.get('/api/blogs')
+     .expect(200)
+
+     await 
+     api.delete(`/api/blogs/671025e22572cd27076a3943`)
+     .expect(404)
+    
+  })
+})
+
+describe.only('Updating an specific blog',()=>{
+  test.only('server responds with 200 on succesful operation',async()=>{
+    const updatedBlog = {
+      "title": "El hombre que se actualiza solo xdd",
+      "author": "Zuckerberg",
+      "url": "jkdashjksdahkd",
+      "likes": 90,
+    }
+
+    const blogs = await
+     api.get('/api/blogs')
+     .expect(200)
+
+    await 
+    api.put(`/api/blogs/${blogs.body[0].id}`)
+    .send(updatedBlog)
+    .expect(200)
+
+  })
+
+  test.only('Server responds 404 if blog doesnt exist', async()=>{
+    const updatedBlog = {
+      "title": "El hombre que no actualiza",
+      "author": "nddsja",
+      "url": "jkdashjksdahkd",
+      "likes": 90,
+    }
+
+    const blogs = await
+     api.get('/api/blogs')
+     .expect(200)
+
+     await 
+     api.put(`/api/blogs/671025e22572cd27076a3943`)
+     .send(updatedBlog)
+     .expect(404)
+  })
 })
 after(async()=>{
-  mongoose.connection.close()
+  await mongoose.connection.close()
 })
