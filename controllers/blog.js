@@ -6,9 +6,15 @@ blogsRouter.get('/', async(req,res) => {
     res.send(blogs)
 })
 blogsRouter.post('/', async(req,res) => {
-    const newBlog = new Blog(req.body)
-    console.log(newBlog)
-    const savedBlog = await newBlog.save()
-    res.status(201).send(savedBlog)
+    if(req.body.title && req.body.author && req.body.url){
+        let newBlog = new Blog({
+            ...req.body,
+             likes: req.body.likes===undefined? 0 : req.body.likes})
+
+        const savedBlog = await newBlog.save()
+        res.status(201).send(savedBlog)
+    }else{
+        res.status(400).send({error:'Required fileds not sent'})
+    }
 })
 module.exports = blogsRouter

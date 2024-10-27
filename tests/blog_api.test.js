@@ -1,78 +1,107 @@
-const { test, describe, after, beforeEach } = require('node:test')
+const { test, beforeEach, after } = require('node:test')
 const assert = require('node:assert')
-const mongoose = require('mongoose')
 const supertest = require('supertest')
-const Blog = require('../models/blog')
 const app = require('../app')
-
+const Blog = require('../models/blog')
+const { default: mongoose } = require('mongoose')
 const api = supertest(app)
 
 const initialBlogs = [
   {
-    title: 'El hombre que no vive',
-    author: 'Daniel Urbina',
-    url: 'fdfjdfhksdfjfd',
-    likes: 31,
+    "title": "El hombre que no vive",
+    "author": "Daniel Urbina",
+    "url": "fdfjdfhksdfjfd",
+    "likes": 31,
   },
   {
-    title: 'El hombre que no vive',
-    author: 'Daniel Urbina',
-    url: 'fdfjdfhksdfjfd',
-    likes: 31,
-  },
+    "title": "El hombre que si vive",
+    "author": "Daniel Urbina",
+    "url": "fdfjdfhksdfjfd",
+    "likes": 31,
+  }
 ]
 
-beforeEach(async () => {
-    await Blog.deleteMany({})
-    const blogPromises = initialBlogs.map(b => {
-      const newBlog = new Blog(b)
-      return newBlog.save()
-    })
-    await Promise.all(blogPromises)
-  })
-  
+beforeEach(async()=>{
+  await Blog.deleteMany({})
+  let newBlog = new Blog(initialBlogs[0])
+  await newBlog.save()
 
-/* test('there are two blogs', async () => {
-  const response = await api.get('/api/blogs')
-  assert.strictEqual(response.body.length, initialBlogs.length)
+  newBlog = new Blog(initialBlogs[1])
+  await newBlog.save()
 })
 
-test('First Blog is by Daniel Urbina',async()=>{
-    const response = await api.get('/api/blogs')
+test('Correct blog number are returned correctly', async () => {
+  const newBlog ={
+    "title": "El hombre que quiere vivir",
+    "author": "Eduardo Martinez",
+    "url": "jdashsdsdha",
+    "likes": 90,
+  }
+  await api.post('/api/blogs')
+    .send(newBlog)
+    .expect(201)
 
-    const authors = response.body.map(b=> b.author)
-    assert(authors.includes('Daniel Urbina'))
-}) */
+    const returnedBlogs = await 
+    api.get('/api/blogs')
+    .expect(200)
+    assert.strictEqual(returnedBlogs.body.length, initialBlogs.length +1)
+    
+    
+})
 
-test('An valid Blog obj can be added', async()=>{
+
+test('DB id field is correctly formatted', async()=>{
+  const content = await api.get('/api/blogs')
+  .expect(200)
+  .expect('Content-Type',/application\/json/)
+
+  const blogs = content.body
+  blogs.forEach(b=>{
+    assert.ok(b.id)
+    assert.strictEqual(b._id, undefined)
+  })
+
+})
+
+test('An new Blog object is added', async()=>{
   const newBlog = {
-    title: 'La calistenia como modelo del hombre',
-    author: 'Pablo Zuckerberg',
-    url: 'dsgvasdhjvasd',
-    likes: 200,
+    "title": "El hombre que va a vivir",
+    "author": "Edward Urbina",
+    "url": "sdndbsdnsabsda",
+    "likes": 21,
   }
 
-  await api.post('/api/blogs')
+  const response = await 
+  api.post('/api/blogs')
+  .send(newBlog)
+
+  const blogs = await 
+  api.get('/api/blogs')
+  .expect(200)
+
+  assert.strictEqual(blogs.body.length, initialBlogs.length+1)
+
+})
+
+test.only('Likes properties missing is filled w 0 ', async()=>{
+  const newBlog = {
+    "title": "El hombre que se fue a morir xd",
+    "author": "Daniel Mtz",
+    "url": "sdndbsdnsabsda",
+  }
+
+  const response = await 
+  api.post('/api/blogs')
   .send(newBlog)
   .expect(201)
-  .expect('Content-Type', /application\/json/)
 
-  const response = await api.get('/api/blogs')
-  const authors = response.body.map(b=> b.author)
-
-  assert(authors.includes('Pablo Zuckerberg'))
-  assert.strictEqual(response.body.length, initialBlogs.length + 1)
-
+  console.log(response.body)
+  assert.strictEqual(response.body.likes, 0)
 })
 
-test('Blog without content is not added',async ()=>{
-  const newBlog = {
-
-  }
-  return api.post('/api/blogs')
-  .expect
+test('Missing required fields on post',async()=>{
+  
 })
-
-after(() => {
+after(async()=>{
   mongoose.connection.close()
 })
