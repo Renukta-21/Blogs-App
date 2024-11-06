@@ -1,9 +1,8 @@
-POST http://localhost:3006/api/blogs
+POST http://localhost:3006/api/users
 Content-Type: application/json
 
 {
-    "title": "El hombre que si vive",
-    "author": "Daniel Urbina",
-    "url": "fdfjdfhksdfjfd",
-    "likes": 0
+    "username": "qwees",
+    "password": "assssssss",
+    "name": "dfw"
 }
