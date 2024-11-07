@@ -1,0 +1,9 @@
+POST http://localhost:3006/api/blogs
+Content-Type: application/json
+
+{"title": "El hombre CRIKI",
+    "author": "Daniel Sadrinki",
+    "url": "jdasjksdandas89sd9a8ds",
+    "likes": 231,
+    "userId": "672bf50305de586a6254d21b"
+    }
