@@ -1,15 +1,8 @@
 const blogsRouter = require('express').Router()
 const jwt = require('jsonwebtoken')
+require('express-async-errors')
 const Blog = require('../models/blog')
 const User = require('../models/user')
-
-const getToken = (request) => {
-  const authorization = request.get('Authorization')
-  if (authorization && authorization.startsWith('Bearer')) {
-    return authorization.replace('Bearer', '')
-  }
-  return null
-}
 
 blogsRouter.get('/', async (req, res) => {
   const blogs = await Blog.find({}).populate('user', { username: 1, name: 1 })
@@ -17,18 +10,12 @@ blogsRouter.get('/', async (req, res) => {
 })
 
 blogsRouter.post('/', async (req, res) => {
-  const decodedToken = jwt.verify(getToken(req), process.env.JWT_SECRET_KEY)
-  if(!decodedToken.id){
-    return res.status(401).send({error: 'invalid token'})
-  }
-
-  const user = await User.findById(decodedToken.id)
-
+  const user = req.user
   if (req.body.title && req.body.author && req.body.url) {
     let newBlog = new Blog({
       ...req.body,
       likes: req.body.likes === undefined ? 0 : req.body.likes,
-      user: req.body.userId,
+      user: user._id,
     })
     const savedBlog = await newBlog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
@@ -40,13 +27,17 @@ blogsRouter.post('/', async (req, res) => {
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
-  const { id } = req.params
-  const blog = await Blog.findByIdAndDelete(id)
-  if (blog) {
-    res.status(204).end()
-  } else {
-    res.status(404).end()
+  const {id} = req.params
+  const user = req.user
+  const blog = await Blog.findById(id)
+  
+  if(blog.user.toString() !== user.id){
+    return res.status(403).send({error: 'You do not have permission to delete this blog'})
   }
+
+  await Blog.findByIdAndDelete(id)
+  res.status(204).end()
+
 })
 
 blogsRouter.put('/:id', async (req, res) => {

@@ -1,10 +1,9 @@
 POST http://localhost:3006/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmlVTSIsImlkIjoiNjcyYmY1MDMwNWRlNTg2YTYyNTRkMjFiIiwiaWF0IjoxNzMwOTY1MzQyfQ.s7BwgLIloLYipD00XzyY2BR9vEVJE2YRvXms5y_FaAg
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmlVTSIsImlkIjoiNjcyYmY1MDMwNWRlNTg2YTYyNTRkMjFiIiwiaWF0IjoxNzMxMDE2OTU1fQ.MamSQBZfOmoEvonQ6-Nr_ilBMeBvr8rCCruSONvqAo0
 
-{"title": "El hombre CRIKI",
-    "author": "Daniel Sadrinki",
-    "url": "jdasjksdandas89sd9a8ds",
-    "likes": 231,
-    "userId": "672bf50305de586a6254d21b"
+{"title": "El hombre WEWEWREererer",
+    "author": "Daniel uiwnwdsadasdsax",
+    "url": "udhud879sdadsa78",
+    "likes": 521
     }
