@@ -1,5 +1,6 @@
 POST http://localhost:3006/api/blogs
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkRhbmlVTSIsImlkIjoiNjcyYmY1MDMwNWRlNTg2YTYyNTRkMjFiIiwiaWF0IjoxNzMwOTY1MzQyfQ.s7BwgLIloLYipD00XzyY2BR9vEVJE2YRvXms5y_FaAg
 
 {"title": "El hombre CRIKI",
     "author": "Daniel Sadrinki",
