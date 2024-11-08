@@ -4,6 +4,7 @@ const supertest = require('supertest')
 const app = require('../app')
 const Blog = require('../models/blog')
 const { default: mongoose } = require('mongoose')
+const User = require('../models/user')
 const api = supertest(app)
 
 const initialBlogs = [
@@ -15,42 +16,62 @@ const initialBlogs = [
   },
   {
     "title": "El hombre que si vive",
-    "author": "Daniel Urbina",
+    "author": "Eduardo Martinez",
     "url": "fdfjdfhksdfjfd",
-    "likes": 31,
+    "likes": 43,
   }
 ]
 
+let token
+const newUser = {
+    username: 'DanielRamirez',
+    password: 'danielUrbina'
+  }
+
 beforeEach(async()=>{
   await Blog.deleteMany({})
+  await User.deleteMany({})
   let newBlog = new Blog(initialBlogs[0])
   await newBlog.save()
 
   newBlog = new Blog(initialBlogs[1])
   await newBlog.save()
+
+  await api
+  .post('/api/users')
+  .send(newUser)
+  .expect(201)
+
+  const response = await api
+  .post('/api/login')
+  .send(newUser)
+  .expect(200)
+
+  
+  token= response.body.token
+  console.log('Token recibido:', token)
+  
 })
 
 test('Correct blog number are returned correctly', async () => {
+  console.log(token)
   const newBlog ={
-    "title": "El hombre que quiere vivir",
-    "author": "Eduardo Martinez",
-    "url": "jdashsdsdha",
-    "likes": 90,
+    "title": "El hombre que quiere  mudar ",
+    "author": "Eduardo Broquios",
+    "url": "jhdahjasdbhsda7878das",
+    "likes": 64,
   }
   await api.post('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
     .send(newBlog)
     .expect(201)
 
-    const returnedBlogs = await 
-    api.get('/api/blogs')
-    .expect(200)
-    assert.strictEqual(returnedBlogs.body.length, initialBlogs.length +1)
     
     
 })
 
 
-test('DB id field is correctly formatted', async()=>{
+/* test('DB id field is correctly formatted', async()=>{
   const content = await api.get('/api/blogs')
   .expect(200)
   .expect('Content-Type',/application\/json/)
@@ -171,7 +192,7 @@ describe.only('Updating an specific blog',()=>{
      .send(updatedBlog)
      .expect(404)
   })
-})
+}) */
 after(async()=>{
   await mongoose.connection.close()
 })

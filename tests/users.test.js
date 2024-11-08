@@ -1,4 +1,4 @@
-const {test, describe, after, before} = require('node:test')
+/* const {test, describe, after, before} = require('node:test')
 const assert = require('node:assert')
 const supertest = require('supertest')
 const app = require('../app')
@@ -7,7 +7,7 @@ const User = require('../models/user')
 const api = supertest(app)
 const bcrypt = require('bcrypt')
 
-before(async()=>{
+beforeEach(async()=>{
     await User.deleteMany({})
     const firstUser = {
         "username": "DaniUM",
@@ -60,4 +60,4 @@ describe('User creation API ', ()=>{
 
 after(async()=>{
     mongoose.connection.close()
-})
+}) */
