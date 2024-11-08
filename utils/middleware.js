@@ -10,6 +10,7 @@ const logger = (req, res, next) => {
 }
 
 const errorHandler = (err, req, res, next) => {
+  /* console.log(err) */
   if (err.name === 'ValidationError') {
     return res.status(400).json({ error: err.message })
   } else if (err.code === 11000) {

@@ -1,9 +1,8 @@
 POST http://localhost:3006/api/blogs
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkVkd2FyZGRhbmllbCIsImlkIjoiNjcyZDk4MTNmYTQ2YmViNzAwMzA0Zjg1IiwiaWF0IjoxNzMxMDQxMzIzfQ.xRYGII97jXfj3_zPaYSCTXPPJS8KiP6CYdaabitspPU
+Authorization: Bearer 
 
-{"title": "El hombre WEWEWREererer",
-    "author": "Daniel uiwnwdsadasdsax",
-    "url": "udhud879sdadsa78",
-    "likes": 521
+{
+    "title": "El hombre que se fue a morir xd",
+    "url": "dsasdakhjsaddsa73"
     }

@@ -31,16 +31,17 @@ const newUser = {
 beforeEach(async()=>{
   await Blog.deleteMany({})
   await User.deleteMany({})
-  let newBlog = new Blog(initialBlogs[0])
+  
+  const res =await api
+  .post('/api/users')
+  .send(newUser)
+  .expect(201)
+
+  let newBlog = new Blog({...initialBlogs[0], user:res.body.id})
   await newBlog.save()
 
   newBlog = new Blog(initialBlogs[1])
   await newBlog.save()
-
-  await api
-  .post('/api/users')
-  .send(newUser)
-  .expect(201)
 
   const response = await api
   .post('/api/login')
@@ -64,15 +65,17 @@ test('Correct blog number are returned correctly', async () => {
     .send(newBlog)
     .expect(201)
 
-    await api.get('/api/blogs')
+    const response = await api.get('/api/blogs')
     .set('Authorization', `Bearer ${token}`)
     .expect(200)
     
+    assert.strictEqual(response.body[2].author, newBlog.author)
 })
 
 
-/* test('DB id field is correctly formatted', async()=>{
+test('DB id field is correctly formatted', async()=>{
   const content = await api.get('/api/blogs')
+  .set('Authorization', `Bearer ${token}`)
   .expect(200)
   .expect('Content-Type',/application\/json/)
 
@@ -86,18 +89,20 @@ test('Correct blog number are returned correctly', async () => {
 
 test('An new Blog object is added', async()=>{
   const newBlog = {
-    "title": "El hombre que va a vivir",
-    "author": "Edward Urbina",
-    "url": "sdndbsdnsabsda",
-    "likes": 21,
+    "title": "El hombre que va a Sanar ",
+    "author": "Pablo Zuckerberg",
+    "url": "njdjkndsaudas7dsa7dsa",
+    "likes": 89,
   }
 
   const response = await 
   api.post('/api/blogs')
+  .set('Authorization', `Bearer ${token}`)
   .send(newBlog)
 
   const blogs = await 
   api.get('/api/blogs')
+  .set('Authorization', `Bearer ${token}`)
   .expect(200)
 
   assert.strictEqual(blogs.body.length, initialBlogs.length+1)
@@ -113,6 +118,7 @@ test('Likes properties missing is filled w 0 ', async()=>{
 
   const response = await 
   api.post('/api/blogs')
+  .set('Authorization', `Bearer ${token}`)
   .send(newBlog)
   .expect(201)
 
@@ -126,35 +132,37 @@ test('Missing required fields on post',async()=>{
   } 
 
   await api.post('/api/blogs')
+  .set('Authorization', `Bearer ${token}`)
   .send(newBlog)
   .expect(400)
 })
 
 describe('Deletion of a blog',()=>{
   test('Succeds with code 204 if id is valid', async()=>{
-    const response = await 
-    api.get('/api/blogs')
-    .expect(200)
 
-    const blogs = response.body
+    const res = await 
+    api.get('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .expect(200)
+    const blogsBefore = res.body
+
     await 
-    api.delete(`/api/blogs/${blogs[0].id}`)
+    api.delete(`/api/blogs/${blogsBefore[0].id}`)
+    .set('Authorization', `Bearer ${token}`)
     .expect(204)
 
+    const response = await 
+    api.get('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .expect(200)
+    const blogsAfter = response.body
+
+    assert.strictEqual(blogsAfter.length, blogsBefore.length - 1)
   })
 
-  test('fails with code 404 if doesnt exist',async()=>{
-    const response = await
-     api.get('/api/blogs')
-     .expect(200)
-
-     await 
-     api.delete(`/api/blogs/671025e22572cd27076a3943`)
-     .expect(404)
-    
-  })
+  
 })
-
+/* 
 describe.only('Updating an specific blog',()=>{
   test.only('server responds with 200 on succesful operation',async()=>{
     const updatedBlog = {

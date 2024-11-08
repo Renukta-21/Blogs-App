@@ -11,19 +11,15 @@ blogsRouter.get('/', async (req, res) => {
 
 blogsRouter.post('/', async (req, res) => {
   const user = req.user
-  if (req.body.title && req.body.author && req.body.url) {
     let newBlog = new Blog({
       ...req.body,
-      likes: req.body.likes === undefined ? 0 : req.body.likes,
+      likes: req.body.likes,
       user: user._id,
     })
     const savedBlog = await newBlog.save()
     user.blogs = user.blogs.concat(savedBlog._id)
     await user.save()
     res.status(201).send(savedBlog)
-  } else {
-    res.status(400).send({ error: 'Required fileds not sent' })
-  }
 })
 
 blogsRouter.delete('/:id', async (req, res) => {
