@@ -8,7 +8,7 @@ const { default: mongoose } = require('mongoose')
 const api = supertest(app)
 
 const newUser = {
-  username: 'DanielRamirez',
+  username: 'DanielRamirezDevian',
   password: 'danielUrbina',
 }
 let token
