@@ -49,8 +49,6 @@ beforeEach(async()=>{
 
   
   token= response.body.token
-  console.log('Token recibido:', token)
-  
 })
 
 test('Correct blog number are returned correctly', async () => {
@@ -66,7 +64,9 @@ test('Correct blog number are returned correctly', async () => {
     .send(newBlog)
     .expect(201)
 
-    
+    await api.get('/api/blogs')
+    .set('Authorization', `Bearer ${token}`)
+    .expect(200)
     
 })
 

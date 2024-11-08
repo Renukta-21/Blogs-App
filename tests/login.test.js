@@ -27,22 +27,8 @@ test('new user succefully added ', async () => {
   assert.strictEqual(response.body.length, 1)
   assert.strictEqual(response.body[0].username, newUser.username)
 })
-
-test('Correct blog number are returned correctly', async () => {
-  console.log(token)
-  const newBlog = {
-    title: 'Nuevo Blog',
-    author: 'Autor Prueba',
-    url: 'http://nuevo-blog.com',
-    likes: 10,
-  }
-
-  // Enviar solicitud POST con el token de autorización
-  await api
-    .post('/api/blogs')
-    .set('Authorization', `Bearer ${token}`) // Agrega el token en el encabezado
-    .send(newBlog)
-    .expect(201) // Espera que la respuesta sea 201 "Created"
+test('token inmutates', async()=>{
+  await api.get('/api/blogs')
 })
 
 after(async () => {
