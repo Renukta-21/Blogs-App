@@ -22,6 +22,8 @@ app.use(middleware.logger)
 app.use('/api/blogs', blogsRouter)
 app.use('/api/users', usersRouter)
 app.use('/api/login', loginRouter)
-
+app.use((req, res) => {
+  res.status(404).json({ error: 'Ruta no encontrada' });
+});
 app.use(middleware.errorHandler)
 module.exports = app

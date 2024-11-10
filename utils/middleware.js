@@ -10,15 +10,19 @@ const logger = (req, res, next) => {
 }
 
 const errorHandler = (err, req, res, next) => {
-  /* console.log(err) */
+  console.log(err)
   if (err.name === 'ValidationError') {
     return res.status(400).json({ error: err.message })
   } else if (err.code === 11000) {
     return res.status(409).json({ error: 'Username already taken' })
   }else if(err.name=== 'JsonWebTokenError'){
     return res.status(401).json({error: err.message})
-  }
-}
+  }else if (err.name === 'CastError') {
+    return res.status(400).json({
+      error: 'Invalid ID format',
+      message: `The field "${err.path}" must be a valid ObjectId.`,
+    });
+}}
 
 const useExtractor = async (req, res, next) => {
     const authorization = req.get('Authorization');
