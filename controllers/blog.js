@@ -40,12 +40,10 @@ blogsRouter.delete('/:id',  middleware.useExtractor,async (req, res) => {
 blogsRouter.put('/:id', middleware.useExtractor, async (req, res) => {
   const { id } = req.params
   const updatedBlog = req.body
-  console.log(updatedBlog)
+
   const blog = await Blog.findByIdAndUpdate(id, updatedBlog, { new: true })
   if (blog) {
-    console.log(blog)
     res.status(200).send(blog)
-    
   } else {
     res.status(404).send({ error: 'Blog not found' })
   }

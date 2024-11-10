@@ -3,6 +3,7 @@ Content-Type: application/json
 Authorization: Bearer 
 
 {
-    "title": "El hombre que se fue a morir xd",
-    "url": "dsasdakhjsaddsa73"
+    "title": "El hombre pez espada jajaja",
+    "author": "Multisimp incorporated hujujuju",
+    "url": "dasbshdabhsdabsda7867dssad opooisa"
     }
