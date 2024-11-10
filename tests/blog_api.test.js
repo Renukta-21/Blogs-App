@@ -12,7 +12,7 @@ const initialBlogs = [
     "title": "El hombre que no vive",
     "author": "Daniel Urbina",
     "url": "fdfjdfhksdfjfd",
-    "likes": 31,
+    "likes": 0,
   },
   {
     "title": "El hombre que si vive",
@@ -40,7 +40,7 @@ beforeEach(async()=>{
   let newBlog = new Blog({...initialBlogs[0], user:res.body.id})
   await newBlog.save()
 
-  newBlog = new Blog(initialBlogs[1])
+  newBlog = new Blog({...initialBlogs[1], user:res.body.id})
   await newBlog.save()
 
   const response = await api
@@ -162,13 +162,10 @@ describe('Deletion of a blog',()=>{
   
 })
 
-describe.only('Updating an specific blog',()=>{
-  test.only('server responds with 200 on succesful operation',async()=>{
+describe('Updating an specific blog',()=>{
+  test('server responds with 200 on succesful operation',async()=>{
     const updatedBlog = {
-      "title": "El hombre que se actualiza solo xdd",
-      "author": "Zuckerberg",
-      "url": "jkdashjksdahkd",
-      "likes": 90,
+      "likes": 1,
     }
 
     const blogs = await
@@ -182,8 +179,8 @@ describe.only('Updating an specific blog',()=>{
     .expect(200)
 
   })
-/* 
-  test.only('Server responds 404 if blog doesnt exist', async()=>{
+
+  test('Server responds 404 if blog doesnt exist', async()=>{
     const updatedBlog = {
       "title": "El hombre que no actualiza",
       "author": "nddsja",
@@ -197,9 +194,10 @@ describe.only('Updating an specific blog',()=>{
 
      await 
      api.put(`/api/blogs/671025e22572cd27076a3943`)
+     .set('Authorization', `Bearer ${token}`)
      .send(updatedBlog)
      .expect(404)
-  }) */
+  })
 })
 after(async()=>{
   await mongoose.connection.close()
