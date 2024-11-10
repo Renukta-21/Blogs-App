@@ -53,7 +53,6 @@ beforeEach(async()=>{
 })
 
 test('Correct blog number are returned correctly', async () => {
-  console.log(token)
   const newBlog ={
     "title": "El hombre que quiere  mudar ",
     "author": "Eduardo Broquios",
@@ -162,7 +161,7 @@ describe('Deletion of a blog',()=>{
 
   
 })
-/* 
+
 describe.only('Updating an specific blog',()=>{
   test.only('server responds with 200 on succesful operation',async()=>{
     const updatedBlog = {
@@ -176,13 +175,14 @@ describe.only('Updating an specific blog',()=>{
      api.get('/api/blogs')
      .expect(200)
 
-    await 
+    const updBlog = await 
     api.put(`/api/blogs/${blogs.body[0].id}`)
+    .set('Authorization', `Bearer ${token}`)
     .send(updatedBlog)
     .expect(200)
 
   })
-
+/* 
   test.only('Server responds 404 if blog doesnt exist', async()=>{
     const updatedBlog = {
       "title": "El hombre que no actualiza",
@@ -199,8 +199,8 @@ describe.only('Updating an specific blog',()=>{
      api.put(`/api/blogs/671025e22572cd27076a3943`)
      .send(updatedBlog)
      .expect(404)
-  })
-}) */
+  }) */
+})
 after(async()=>{
   await mongoose.connection.close()
 })
