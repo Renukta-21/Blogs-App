@@ -198,6 +198,18 @@ describe('Updating an specific blog',()=>{
      .send(updatedBlog)
      .expect(404)
   })
+
+  /* test('New user added succesfully', async()=>{
+    const newUser ={
+      username:'DanielUM',
+      password:'daniel211004'
+    } 
+
+    await 
+    api.post('/api/users')
+    .send(newUser)
+    .expect(201)
+  }) */
 })
 after(async()=>{
   await mongoose.connection.close()
